@@ -51,8 +51,11 @@ inline bool is_mac() {
 #endif
 }
 inline bool is_wsl() {
-#if defined(__linux__)
+#ifndef _WIN32
+    // UM_FAKE_WSL=1: a test switch (tests/modder_win.sh) that makes any POSIX system take the WSL paths
     if (!env("UM_FAKE_WSL").empty()) return env("UM_FAKE_WSL") == "1";
+#endif
+#if defined(__linux__)
     struct utsname u{};
     if (uname(&u) == 0 && lower(u.release).find("microsoft") != std::string::npos) return true;
     std::error_code ec; return fs::exists("/proc/sys/fs/binfmt_misc/WSLInterop", ec);

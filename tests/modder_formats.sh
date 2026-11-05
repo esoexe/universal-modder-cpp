@@ -24,7 +24,7 @@ eq "$(sed -n 5p <<<"$OUT")" "  layer 0x04   in 1 frames, 0 blocks, 0 frames reus
 eq "$(sed -n 6p <<<"$OUT")" "  layer player in 1 frames, 1 blocks, 0 frames reuse blocks of the previous one (flag 0x80)" "player layer line"
 u sld to-png fx/unit.sld out/ --layers
 eq "$OUT" "wrote 2 frames to out" "to-png summary (pathlib-style folder)"
-eq "$(ls out | tr '\n' ' ')" "unit_0000.png unit_0000_main.png unit_0000_player.png unit_0000_shadow.png unit_0001.png unit_0001_main.png " "files"
+eq "$(LC_ALL=C ls out | tr '\n' ' ')" "unit_0000.png unit_0000_main.png unit_0000_player.png unit_0000_shadow.png unit_0001.png unit_0001_main.png " "files"
 eq "$(px out/unit_0000_main.png 0,0)" "[255,0,0,255]" "BC1 index 0 (4-colour)"
 eq "$(px out/unit_0000_main.png 5,5)" "[0,0,255,255]" "BC1 index 1, skip command"
 eq "$(px out/unit_0000_main.png 4,0)" "[0,0,0,0]" "skipped block is empty"

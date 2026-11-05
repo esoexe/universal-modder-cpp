@@ -93,7 +93,8 @@ P=knowledge/games/hades-ii/a-new-boon-god.md
 u kb check "$P" --root knowledge
 eq "$CODE" 1 "a fresh scaffold fails"
 has "$OUT" "unfilled template text" "scaffold reason"
-sed -i 's/FILL IN: exact build/1.0.1 (Steam)/; s/anti_cheat: FILL IN/anti_cheat: none/; s/> Two to four sentences: what you built/> Added a boon god via a Lua mod loader/; s/The most valuable section. Numbered; each one symptom → cause → fix.//; s/1\. \*\*Symptom\.\*\* What you saw\. \*\*Cause:\*\* what it really was\. \*\*Fix:\*\* what worked\./1. **Boons never offered.** **Cause:** pool cached at load. **Fix:** register before the run starts./' "$P"
+sed -i.bak 's/FILL IN: exact build/1.0.1 (Steam)/; s/anti_cheat: FILL IN/anti_cheat: none/; s/> Two to four sentences: what you built/> Added a boon god via a Lua mod loader/; s/The most valuable section. Numbered; each one symptom → cause → fix.//; s/1\. \*\*Symptom\.\*\* What you saw\. \*\*Cause:\*\* what it really was\. \*\*Fix:\*\* what worked\./1. **Boons never offered.** **Cause:** pool cached at load. **Fix:** register before the run starts./' "$P"
+rm -f "$P.bak"   # -i.bak: GNU and BSD sed both take it
 u kb check "$P" --root knowledge
 eq "$CODE" 0 "filled note passes"
 # an apostrophe inside a plain scalar of a multi-line flow list (a real note in the knowledge base has one)
@@ -101,7 +102,7 @@ cat > fm.txt <<'EOF2'
 tools: [UELib, the core's collision library (StaticMapTree),
   a debugger, 'it''s quoted', "a \"b\""]
 EOF2
-sed -i '1r fm.txt' "$P"
+sed -i.bak '1r fm.txt' "$P"; rm -f "$P.bak"
 u kb check "$P" --root knowledge
 eq "$CODE" 0 "apostrophe inside a multi-line flow list"
 u kb search boon --root knowledge

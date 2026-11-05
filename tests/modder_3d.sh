@@ -125,7 +125,7 @@ has "$L" $'\t\t{ "weaponfire", 2, { -0.000000, 0.000000, 1.021800 },' "leaf row 
 has "$L" '"Scene_Root_1", 0,' "unique names"
 sed -n 's/^\tBlob = "\(.*\)",$/\1/p' vm.luau | base64 -d > blob.bin
 eq "$(wc -c < blob.bin | tr -d ' ')" 182 "blob decodes to 182 bytes"
-eq "$(od -An -t d2 -N 14 blob.bin | tr -s ' ' | sed 's/^ //')" "-960 1920 2880 0 0 0 32767" "frame 1 of arm as int16"
+eq "$(od -An -t d2 -N 14 blob.bin | xargs)" "-960 1920 2880 0 0 0 32767" "frame 1 of arm as int16"
 eq "$(tail -c 1 vm.luau | od -An -c | tr -d ' ')" '\n' "ends with a newline"
 jq 'del(.root.seqs)' vm.json > noseq.json
 u b3d anim noseq.json x.luau --scale 0.06 --name Test
@@ -172,7 +172,7 @@ eq "$(tail -c 42 out.upk)" "$(cat fx/UPK_EXPECTED)" "LZO1X literal runs + M1/M2/
 cmp -s <(head -c 145 out.upk) <(head -c 145 fx/lzo.upk) && ok || bad "summary region copied"
 eq "$(od -An -t u4 -j $((0x79)) -N 4 out.upk | tr -d ' ')" 2 "flags kept without --clear-flags"
 u upk unpack fx/lzo.upk out2.upk --clear-flags
-eq "$(od -An -t u4 -j $((0x79)) -N 8 out2.upk | tr -s ' ' | sed 's/^ //')" "0 1" "--clear-flags zeroes only the flags dword"
+eq "$(od -An -t u4 -j $((0x79)) -N 8 out2.upk | xargs)" "0 1" "--clear-flags zeroes only the flags dword"
 cp out.upk out3.upk; u upk clear-flags out3.upk 0x79
 eq "$CODE" 0 "clear-flags"; cmp -s out2.upk out3.upk && ok || bad "clear-flags = --clear-flags"
 cp out.upk out4.upk; u upk clear-flags out4.upk 121
