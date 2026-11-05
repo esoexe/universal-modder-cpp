@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# universal-modder-cpp launcher: runs build/um, building it with `make` the first time.
+# Works from a clone, a plugin install, or a PATH symlink.
+set -euo pipefail
+SRC="${BASH_SOURCE[0]}"
+while [ -L "$SRC" ]; do DIR="$(cd -P "$(dirname "$SRC")" && pwd)"; SRC="$(readlink "$SRC")"; [[ "$SRC" != /* ]] && SRC="$DIR/$SRC"; done
+ROOT="$(cd -P "$(dirname "$SRC")/.." && pwd)"
+BIN="$ROOT/build/um"; [ -x "$BIN.exe" ] && BIN="$BIN.exe"
+if [ ! -x "$BIN" ]; then
+  echo "um: building build/um (first run; needs a C++20 compiler, libcurl and zlib)..." >&2
+  make -C "$ROOT" -s >&2
+fi
+exec "$BIN" "$@"

@@ -1,0 +1,21 @@
+{
+  "name": "universal-modder-cpp",
+  "interface": {
+    "displayName": "universal-modder-cpp",
+    "websiteURL": "https://github.com/esoexe/universal-modder-cpp"
+  },
+  "plugins": [
+    {
+      "name": "universal-modder-cpp",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/rehan-remade/universal-modder.git"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    }
+  ]
+}

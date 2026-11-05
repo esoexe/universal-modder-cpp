@@ -1,0 +1,25 @@
+{
+  "name": "universal-modder-cpp",
+  "description": "Mod almost any game you own with an AI agent: engine recon, reverse engineering, fal-generated art/3D/audio, in-game testing, showcase videos, and a shared knowledge base of how games were modded. C++ edition: the um CLI as one native program, no Python.",
+  "author": {
+    "name": "Rehan",
+    "url": "https://github.com/rehan-remade"
+  },
+  "homepage": "https://github.com/esoexe/universal-modder-cpp",
+  "repository": "https://github.com/esoexe/universal-modder-cpp",
+  "license": "MIT",
+  "keywords": [
+    "game-modding",
+    "modding",
+    "reverse-engineering",
+    "knowledge-base",
+    "tmodloader",
+    "bepinex",
+    "ue4ss",
+    "fal",
+    "sprites",
+    "game-assets",
+    "mcp",
+    "agent-skills"
+  ]
+}

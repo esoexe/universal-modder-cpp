@@ -1,0 +1,65 @@
+name: ci
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  unix:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+      - name: Dependencies (Linux)
+        if: runner.os == 'Linux'
+        run: sudo apt-get update -q && sudo apt-get install -y -q libcurl4-openssl-dev zlib1g-dev jq ffmpeg
+      - name: Dependencies (macOS)
+        if: runner.os == 'macOS'
+        run: command -v jq || brew install jq
+      - name: Build
+        run: make -j2
+      - name: Test
+        run: make test
+      - name: The knowledge base and the repo pass the toolkit's own checks
+        run: build/um kb check --index && build/um publish check .
+  windows:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+      - run: sudo apt-get update -q && sudo apt-get install -y -q g++-mingw-w64-x86-64-posix
+      - run: make windows
+      - uses: actions/upload-artifact@v7
+        with:
+          name: um-windows
+          path: build/um.exe
+  windows-smoke:
+    needs: windows
+    runs-on: windows-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/download-artifact@v8
+        with:
+          name: um-windows
+          path: build
+      - name: The .exe runs and handles files
+        run: |
+          build/um.exe --version
+          build/um.exe --help > /dev/null
+          node tests/fixtures/modder/gen_fixtures.js fx
+          build/um.exe upk unpack fx/lzo.upk out.upk
+          build/um.exe sld info fx/unit.sld
+          build/um.exe vtf to-png fx/dxt1.vtf d1.png
+          build/um.exe render3d fx/unit.glb frames --preset aoe2 --canvas 64 --headings 2 --samples 2
+          test -f frames/idle_01_000.png
+          build/um.exe b3d dump fx/viewmodel.b3d vm.json
+          cmd //c "bin\\um.cmd --version"

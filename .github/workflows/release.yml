@@ -1,0 +1,43 @@
+name: release
+on:
+  push:
+    tags: ['v*']
+permissions:
+  contents: write
+jobs:
+  build:
+    strategy:
+      matrix:
+        include:
+          - { os: ubuntu-22.04, name: um-linux-x64 }
+          - { os: macos-latest, name: um-macos-arm64 }
+          - { os: ubuntu-latest, name: um-windows-x64.exe, cross: true }
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v7
+      - if: runner.os == 'Linux' && !matrix.cross
+        run: sudo apt-get update -q && sudo apt-get install -y -q libcurl4-openssl-dev zlib1g-dev
+      - if: matrix.cross
+        run: sudo apt-get update -q && sudo apt-get install -y -q g++-mingw-w64-x86-64-posix && make windows && cp build/um.exe "${{ matrix.name }}"
+      - if: '!matrix.cross'
+        run: make && cp build/um "${{ matrix.name }}"
+      - uses: actions/upload-artifact@v7
+        with:
+          name: ${{ matrix.name }}
+          path: ${{ matrix.name }}
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          path: dist
+          merge-multiple: true
+      - name: Checksums and release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cd dist && sha256sum um-* > SHA256SUMS.txt && cat SHA256SUMS.txt
+          gh release create "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" --title "universal-modder-cpp $GITHUB_REF_NAME" \
+            --notes "The um CLI of universal-modder as one native program (C++20, no Python). Linux x64 (needs libcurl), macOS arm64, Windows x64 (no DLLs). Ported from rehan-remade/universal-modder (MIT); see PORTING.md." \
+            um-* SHA256SUMS.txt || gh release upload "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" --clobber um-* SHA256SUMS.txt

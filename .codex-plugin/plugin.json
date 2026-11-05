@@ -1,0 +1,49 @@
+{
+  "name": "universal-modder-cpp",
+  "version": "1.0.0",
+  "description": "Mod almost any game you own with an AI agent: engine recon, reverse engineering, fal-generated art/3D/audio, in-game testing, showcase videos, and a shared knowledge base of how games were modded. C++ edition: the um CLI as one native program, no Python.",
+  "author": {
+    "name": "Rehan",
+    "url": "https://github.com/rehan-remade"
+  },
+  "homepage": "https://github.com/esoexe/universal-modder-cpp",
+  "repository": "https://github.com/esoexe/universal-modder-cpp",
+  "license": "MIT",
+  "keywords": [
+    "game-modding",
+    "modding",
+    "reverse-engineering",
+    "knowledge-base",
+    "tmodloader",
+    "bepinex",
+    "ue4ss",
+    "fal",
+    "sprites",
+    "game-assets",
+    "mcp",
+    "agent-skills"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "universal-modder-cpp",
+    "shortDescription": "Mod any game you own",
+    "longDescription": "Mod almost any game you own with an AI agent: engine recon, reverse engineering, fal-generated art/3D/audio, in-game testing, showcase videos, and a shared knowledge base of how games were modded. C++ edition: the um CLI as one native program, no Python.",
+    "developerName": "Rehan",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/esoexe/universal-modder-cpp",
+    "defaultPrompt": [
+      "Mod this game: add a new weapon with fal-generated sprites",
+      "What engine is this game and how do people mod it?",
+      "Search the modding knowledge base for this game"
+    ],
+    "brandColor": "#FF3CD2",
+    "composerIcon": "./docs/media/logo-128.png",
+    "logo": "./docs/media/logo.png",
+    "screenshots": []
+  }
+}

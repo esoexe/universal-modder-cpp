@@ -1,0 +1,13 @@
+{
+  "name": "universal-modder-cpp",
+  "owner": {
+    "name": "Rehan"
+  },
+  "plugins": [
+    {
+      "name": "universal-modder-cpp",
+      "source": "./",
+      "description": "Mod almost any game you own with an AI agent: engine recon, reverse engineering, fal-generated art/3D/audio, in-game testing, showcase videos, and a shared knowledge base of how games were modded. C++ edition: the um CLI as one native program, no Python."
+    }
+  ]
+}

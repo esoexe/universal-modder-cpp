@@ -1,0 +1,6 @@
+#!/bin/sh
+# `um-tool um <args>` -> build/um <args>
+shift
+d="$(cd "$(dirname "$0")/.." && pwd)/build"
+[ -x "$d/um.exe" ] && exec "$d/um.exe" "$@"
+exec "$d/um" "$@"
